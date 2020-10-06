@@ -41,6 +41,7 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
+        return $request;
         DB::table('produk')->insert([
             'kd_produk' => $request->kd_produk,
             'nama' => $request->nama,
@@ -107,5 +108,25 @@ class ProdukController extends Controller
     {
         DB::table('produk')->where('id',$id)->delete();
         return redirect('produk');
+    }
+
+
+
+
+    public function addtran(Request $request)
+    {
+        //     'kd_pembelian'=>$request->kd_pembelian,
+        return $request;
+        $tgl = date('y/m/d');
+        $bt = "berhasil";
+
+         DB::table('transaksi')->insert([
+            'kd_pembelian'=>$request->kd_pembelian,
+            'tanggal'=>$tgl,
+            'nilai_transaksi'=>$request->nilai_transaksi,
+            'status'=>$bt
+        ]);
+        $produk = ProdukModel::all();
+        return redirect('/cart');
     }
 }

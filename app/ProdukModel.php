@@ -14,4 +14,14 @@ class ProdukModel extends Model
         return $this->belongsTo('App\KategoriModel', 'id_kategori', 'id');
     }
 
+    public function configurable()
+    {
+        return $this->type == 'configurable';
+    }
+
+    public function simple()
+    {
+        return $this->type == 'simple';
+    }
+
 }

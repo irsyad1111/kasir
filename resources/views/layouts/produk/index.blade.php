@@ -24,7 +24,6 @@
 @section('content')
 <div class="animated fadeIn">
                 <div class="row">
-
                     <div class="col-md-12">
                     <a href="{{('addproduk')}}"><button type="button" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp; Tambah</button></a>
                     <br>

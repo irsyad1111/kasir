@@ -37,3 +37,21 @@ Route::delete('deleteproduk/{id}', 'ProdukController@destroy');
 Route::get('kategori', 'KategoriController@index');
 Route::post('kategori', 'KategoriController@store');
 Route::post('editkategori', 'KategoriController@edit');
+
+//transaksi
+Route::get('transaksi', 'TransaksiController@index');
+Route::get('dotransaksi', 'TransaksiController@dotransaksi');
+Route::get('tampil', 'TransaksiController@tampilkanSession');
+
+//
+//
+Route::get('carts', 'TransaksiController@cartstore');
+
+Route::get('/cart','TransaksiController@index')->name('transaksi.index');
+Route::post('/cart','TransaksiController@add')->name('transaksi.add');
+Route::post('/cart/conditions','TransaksiController@addCondition')->name('transaksi.addCondition');
+Route::delete('/cart/conditions','TransaksiController@clearCartConditions')->name('transaksi.clearCartConditions');
+Route::get('/cart/details','TransaksiController@details')->name('transaksi.details');
+Route::delete('/cart/{id}','TransaksiController@delete')->name('transaksi.delete');
+
+Route::post('addtran','ProdukController@addtran');

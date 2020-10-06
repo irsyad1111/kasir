@@ -31,6 +31,8 @@
     <!-- Choosen -->
     <link rel="stylesheet" href="{{ asset ('style/vendors/chosen/chosen.min.css') }}">
 
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
 
 
     <link rel="stylesheet" href="{{ asset ('style/assets/css/style.css') }}">
@@ -67,7 +69,9 @@
                             <li><i class="fa fa-puzzle-piece"></i><a href="{{ url ('produk')}}">Data Produk</a></li>
                             <li><i class="fa fa-puzzle-piece"></i><a href="{{ url ('kategori')}}">Kategori Produk</a></li>
                         </ul>
-
+                    </li>
+                    <li class="active">
+                        <a href="{{ url ('transaksi')}}"> <i class="menu-icon fa fa-dashboard"></i>Transaksi </a>
                     </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
