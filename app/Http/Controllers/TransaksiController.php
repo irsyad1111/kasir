@@ -20,7 +20,8 @@ class TransaksiController extends Controller
     {
         //INVOICE
 
-         $id = DB::table('transaksi')->desc()->limit=1;
+        $id = DB::table("transakasi")->count();  
+        
         $ldate = date('Ymd/H:i');
         $depan = "INV/";
         $invoice = $depan.'/'.$id.'/'.$ldate;
@@ -218,6 +219,7 @@ class TransaksiController extends Controller
     }
     public function savetransaksi(Request $request){
          //     'kd_pembelian'=>$request->kd_pembelian,
+
          DB::table('transaksi')->insert([
             'kd_pembelian'=>$request->kd_pembelian,
             'tanggal'=>$request->tanggal,
