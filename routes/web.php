@@ -37,6 +37,9 @@ Route::delete('deleteproduk/{id}', 'ProdukController@destroy');
 Route::get('kategori', 'KategoriController@index');
 Route::post('kategori', 'KategoriController@store');
 Route::post('editkategori', 'KategoriController@edit');
+Route::get('editor/{id}', 'KategoriController@tadi');
+Route::post('editor/{id}', 'KategoriController@update');
+Route::delete('hapus/{id}', 'KategoriController@destroy');
 
 //transaksi
 Route::get('transaksi', 'TransaksiController@index');

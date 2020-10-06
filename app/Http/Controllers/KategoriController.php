@@ -15,6 +15,7 @@ class KategoriController extends Controller
      */
     public function index()
     {
+
         $kategori = KategoriModel::all();
         return view('layouts.kategori.index', compact('kategori'));
     }
@@ -77,7 +78,12 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        DB::table('kategori_produk')->where('id',$id)->update([
+            'kode_kategori' => $request->kode_kategori,
+            'nama_kategori' => $request->nama_kategori,
+           
+        ]);
+        return redirect('kategori');
     }
 
     /**
@@ -88,6 +94,14 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        //
+        DB::table('kategori_produk')->where('id',$id)->delete();
+        return redirect('kategori');
+    }
+
+    public function tadi($id)
+    {
+        $editor = DB::table('kategori_produk')->where('id',$id)->get();
+        return view('layouts.kategori.edit', compact('editor'));
+        // return $editor;
     }
 }

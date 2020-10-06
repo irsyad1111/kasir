@@ -30,7 +30,6 @@
                 Tambah
             </button>
         <br>
-        
         <br>
             <div class="card">
                 <div class="card-header">
@@ -56,10 +55,11 @@
                                 <td>{{$item->kode_kategori}}</td>
                                 <td>{{$item->nama_kategori}}</td>
                                 <td align="center">
-                               <button type="button" class="btn btn-primary btn-sm edit"  data-toggle="modal" data-target="#edit" data-kode="{{$item->kode_kategori}}" data-nama="{{$item->nama_kategori}}"
-                                   data-idk="{{$item->id}}"><i class="fa fa-pencil"></i>&nbsp; Edit</button>
+                                    <a href="{{url('editor/'.$item->id)}}" class="btn btn-warning"><i class="fa fa-pencil"></i> </a>
+                               {{-- <button type="button" id="#modal-edit" class="btn btn-primary btn-sm edit"  data-toggle="modal" data-target="#modal-edit" data-kode="{{$item->kode_kategori}}" data-nama="{{$item->nama_kategori}}"
+                                   data-idk="{{$item->id}}"><i class="fa fa-pencil"></i>&nbsp; Edit</button> --}}
 
-                                <form action="{{url('deleteproduk', $item->id)}}" class="d-inline" method="post" onsubmit="return confirm('Apakah anda yakin ingin menghapusnya?')">
+                                <form action="{{url('hapus', $item->id)}}" class="d-inline" method="post" onsubmit="return confirm('Apakah anda yakin ingin menghapusnya?')">
                             @method('delete')
                             @csrf
                             <button class="btn btn-danger btn-sm">
@@ -89,12 +89,13 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+           
             <form action="{{url('kategori')}}" method="post">
             @csrf
             <div class="modal-body">
             <div class="form-group">
                 <label for="cc-payment" class="control-label mb-1">Kode Kategori</label>
-                <input id="kode_kategori" name="kode_kategori" type="text" class="form-control" value="">
+                <input id="kode_kategori" name="kode_kategori" type="text" class="form-control" value=""">
             </div>
             <div class="form-group">
                 <label for="cc-payment" class="control-label mb-1">nama Kategori</label>
@@ -106,12 +107,13 @@
                 <button type="submit" class="btn btn-primary">Simpan</button>
             </div>
             </form>
+           
         </div>
     </div>
 </div>
 
 <!-- EDIT -->
-<div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
+<div class="modal fade" id="modal-edit" tabindex="-1" role="dialog" aria-labelledby="smallmodalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -142,26 +144,38 @@
 </div>
 
 @section('scriptjs')
-  <script>
+<script>
 
-
-  $('#edit').on('show.bs.modal', function (event) {
-      var button = $(event.relatedTarget)
-      var kode = button.data('kode')
+   $('#modal-edit').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) 
+      var kode= button.data('kode')
       var nama = button.data('nama')
-      var idk = button.data('ida')
+      var jurusan = button.data('jurusan')
+      var angkatan= button.data('angkatan')
+      var id = button.data('idmhs')
+      var gambar = button.data('foto')
+      var jk = button.data('jk')
+      var tgllahir =button.data('tgllahir')
+     
+      var modal = $(this)
 
-
-
-      $('#modal-input-kode_kategori').val(kode);
-      $('#nama_kategori').val(nama);
-      //modal.find('.modal-body #idk').val(idk);
-
-
-
-
+alert(nama);
+    //   modal.find('.modal-body #kode').val(kode);
+    //   modal.find('.modal-body #nama').val(nama);
+    //   modal.find('.modal-body #jurusan').val(jurusan);
+    //   modal.find('.modal-body #angkatan').val(angkatan);
+    //   modal.find('.modal-body #jk').val(jk);
+    //   modal.find('.modal-body #tgllahir').val(tgllahir);
+    //   modal.find('.modal-body #idmhs').val(id);
+    //   modal.find('.modal-body #fileku').val(gambar);      
+      
 
     });
 
+     
+});
+
 </script>
+
+
 @endsection
