@@ -31,19 +31,20 @@
                     <div class="card">
                     <div class="card-body">
                     <div class="form-group form-group-sm">
-                        <label>Nama</label>
-                        <input v-model="item.name" class="form-control" value="@{{message}}" placeholder="">
+                        <label>nama</label>
+                        <input v-model="item.name" class="form-control" value="" placeholder="" name="kode" id="kode">
                     </div>
                     <!-- <div class="form-group form-group-sm">
                         <label>Name</label>
                         <input v-model="item.name" class="form-control" placeholder="Name">
                     </div> -->
                     <div class="form-group">
-                        <label class="control-label mb-1">Nama Produk</label>
-                        <select data-placeholder="Pilih Produk" v-model="item.id" onchange="changeEventHandler(this);" id="nama" name="nama " class="form-control">
+                        <label class="control-label mb-1">kode 
+                            Produk</label>
+                        <select data-placeholder="Pilih Produk" v-model="item.id" id="nama" name="nama " class="form-control" v-on:change="pilihProduk()">
                         <option value="">-pilih-</option>
                         @foreach($produk as $item)
-                            <option value="{{$item->id}}" nama="{{$item->nama}}" harga="{{$item->harga}}">{{$item->kd_produk}}-{{$item->nama}}</option>
+                            <option value="{{$item->kd_produk}}" data-nama="{{$item->nama}}"  data-harga="{{$item->harga}}">{{$item->kd_produk}}</option>
                         @endforeach
                         </select>
                     </div>
@@ -119,15 +120,6 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
 <script>
-    function changeEventHandler(v) {
-    var nama = document.getElementById("total").value ;
-    var y = $(v).find('option:selected').attr('nama');
-    //Set
-
-    $('#harga').val(x);
-    $('#nama').val(y);
-}
-
 
     (function($) {
 
@@ -176,6 +168,16 @@
                     this.loadItems();
                 },
                 methods: {
+                    pilihProduk: function(){
+                        var button =$('#nama').find('option:selected'); 
+                        var harga = button.data('harga')
+                        var nama = button.data('nama')
+                        alert(harga);
+
+                        this.item.name = nama ;
+                        this.item.price = harga;
+                    
+                    },
                     addItem: function() {
 
                         var _this = this;
