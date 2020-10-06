@@ -54,4 +54,4 @@ Route::delete('/cart/conditions','TransaksiController@clearCartConditions')->nam
 Route::get('/cart/details','TransaksiController@details')->name('transaksi.details');
 Route::delete('/cart/{id}','TransaksiController@delete')->name('transaksi.delete');
 
-Route::post('addtran','ProdukController@addtran');
+Route::post('/addtran','TransaksiController@savetransaksi');

@@ -116,17 +116,14 @@ class ProdukController extends Controller
     public function addtran(Request $request)
     {
         //     'kd_pembelian'=>$request->kd_pembelian,
-        return $request;
-        $tgl = date('y/m/d');
-        $bt = "berhasil";
-
          DB::table('transaksi')->insert([
             'kd_pembelian'=>$request->kd_pembelian,
-            'tanggal'=>$tgl,
+            'tanggal'=>$request->tanggal,
             'nilai_transaksi'=>$request->nilai_transaksi,
-            'status'=>$bt
+            'status'=>'Berhasil',
         ]);
+
         $produk = ProdukModel::all();
-        return redirect('/cart');
+        return view('layouts.produk.index', compact('produk'));
     }
 }
