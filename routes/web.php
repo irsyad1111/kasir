@@ -21,11 +21,10 @@ Route::get('main', function() {
     return view('panel.main');
 });
 
-Route::get('dashboard', function() {
-    return view('layouts.dashboard');
-});
+
 
 //Produk
+Route::get('dashboard', 'DashboardController@index');
 Route::get('produk', 'ProdukController@index');
 Route::get('addproduk', 'ProdukController@create');
 Route::post('produk', 'ProdukController@store');
@@ -51,6 +50,9 @@ Route::get('indexstock', 'TransaksiController@indexstock');
 Route::get('transaksi', 'TransaksiController@index');
 Route::get('trxansaksi', 'TransaksiController@index');
 
+//laporanm
+Route::get('laporan', 'LaporanController@index');
+
 //
 //
 Route::get('carts', 'TransaksiController@cartstore');
@@ -60,6 +62,7 @@ Route::post('/cart','TransaksiController@add')->name('transaksi.add');
 Route::post('/cart/conditions','TransaksiController@addCondition')->name('transaksi.addCondition');
 Route::get('/cart/details','TransaksiController@details')->name('transaksi.details');
 Route::delete('/cart/{id}','TransaksiController@delete')->name('transaksi.delete');
+Route::any('/cart1/{id}','TransaksiController@delete1')->name('transaksi.delete1');
 Route::delete('/hapussemua/','TransaksiController@hapussemua')->name('transaksi.hapussemua');
 
 Route::post('/addtran','TransaksiController@savetransaksi');

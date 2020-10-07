@@ -35,7 +35,7 @@
                             <input id="kategori" name="kategori" readonly class="form-control" placeholder="Masukkan Jumlah Stock" value="{{$seri->kategori->nama_kategori}}">
                             @endforeach
                         <div class="form-group">
-                            <select data-placeholder="Pilih Kategori Produk " class="standardSelect" id="id_kategori" name="id_kategori">
+                            <select data-placeholder="Pilih Kategori Produk " class="form-control" id="id_kategori" name="id_kategori">
                                 <option value=""></option>
                             @foreach($kategori as $item)
                                 <option value="{{$item->id}}">{{$item->nama_kategori}}</option>

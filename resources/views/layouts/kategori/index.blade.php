@@ -26,7 +26,7 @@
     <div class="row">
 
         <div class="col-md-12">
-        <button type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#smallmodal">
+        <button type="button" class="btn mb-1 btn-primary" data-toggle="modal" data-target="#smallmodal">
                 Tambah
             </button>
         <br>
@@ -51,7 +51,7 @@
                             @endphp
                             @foreach($kategori as $item)
                             <tr>
-                                <td>{{$no}}</td>
+                                <td>{{$no++}}</td>
                                 <td>{{$item->kode_kategori}}</td>
                                 <td>{{$item->nama_kategori}}</td>
                                 <td align="center">

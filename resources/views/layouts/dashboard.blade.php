@@ -1,5 +1,5 @@
 @extends('panel.main')
-
+ 
 @section('breadcrumbs')
 <div class="breadcrumbs">
     <div class="col-sm-4">
@@ -20,7 +20,25 @@
     </div>
 </div>
 @endsection
-
+ 
 @section('content')
-
+<div class="col-md-4">
+    <div class="card">
+        <div class="card-header bg-secondary">
+            <strong class="card-title text-light">Total Produk</strong>
+        </div>
+        <div class="card-body text-white bg-primary">
+            <p class="card-text text-light">Total Produk : {{$count}}</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header bg-secondary">
+            <strong class="card-title text-light">Total Kategori</strong>
+        </div>
+        <div class="card-body text-white bg-primary">
+            <p class="card-text text-light">Total Produk : {{$count}}</p>
+        </div>
+    </div>
+</div>
 @endsection
+ 

@@ -76,6 +76,12 @@
                     <li class="active">
                         <a href="{{ url ('indexstock')}}"> <i class="menu-icon fa fa-dashboard"></i>Tambah Stock Produk</a>
                     </li>
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Laporan</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="fa fa-puzzle-piece"></i><a href="{{ url ('laporan')}}">Laporan Transaksi</a></li>                            
+                        </ul>
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -86,7 +92,15 @@
     <!-- Right Panel -->
 
     <div id="right-panel" class="right-panel">
+        <header id="header" class="header">
+
+            <div class="header-menu">
+
+                <div class="col-sm-7">
+    <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
     @yield('breadcrumbs')
+                </div>
+            </div>
 
         <div class="content mt-3">
 

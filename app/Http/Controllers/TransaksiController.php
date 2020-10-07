@@ -81,6 +81,8 @@ class TransaksiController extends Controller
 
     public function delete($id)
     {
+        // return $Id;
+        // foreach($id as $id ){
         $userId = 1; // get this from session or wherever it came from
 
         \Cart::session($userId)->remove($id);
@@ -90,6 +92,27 @@ class TransaksiController extends Controller
             'data' => $id,
             'message' => "cart item {$id} removed."
         ),200,[]);
+    // }
+    }
+
+    public function delete1($id)
+    {
+        // return $id;
+        
+        $userId = 1; // get this from session or wherever it came from
+        $id = explode(',', $id);
+        
+        foreach($id as $id ){
+
+        \Cart::session($userId)->remove($id);
+        
+       }
+
+       return response(array(
+        'success' => true,
+        'data' => 'all',
+        'message' => "cart item removed."
+    ),200,[]);
     }
 
 
@@ -159,6 +182,7 @@ class TransaksiController extends Controller
             'tanggal'=>$request->tanggal,
             'nilai_transaksi'=>$request->nilai_transaksi,
             'status'=>'Berhasil',
+            'updated_at'=> now()
         ]);
 
 
@@ -173,35 +197,33 @@ class TransaksiController extends Controller
             $stock = ProdukModel::where('kd_produk', $kd_produk);
             $stock->decrement('stock', $request->jumlah[$x]);
         }
-            //GET DATA BERDASARKAN ID
-            $invoice = ProdukModel::where('kd_produk', $kd_produk);
-            //LOAD PDF YANG MERUJUK KE VIEW PRINT.BLADE.PHP DENGAN MENGIRIMKAN DATA DARI INVOICE
-            //KEMUDIAN MENGGUNAKAN PENGATURAN LANDSCAPE A4
-            $pdf = PDF::loadView('invoice.print', compact('invoice'))->setPaper('a4', 'landscape');
-            return $pdf->stream();
+            // //GET DATA BERDASARKAN ID
+            // $invoice = ProdukModel::where('kd_produk', $kd_produk);
+            // //LOAD PDF YANG MERUJUK KE VIEW PRINT.BLADE.PHP DENGAN MENGIRIMKAN DATA DARI INVOICE
+            // //KEMUDIAN MENGGUNAKAN PENGATURAN LANDSCAPE A4
+            // $pdf = PDF::loadView('invoice.print', compact('invoice'))->setPaper('a4', 'landscape');
+            // return $pdf->stream();
             }else{
                         DB::table('transaksi')->insert([
                     'kd_pembelian'=>$request->kd_pembelian,
                     'tanggal'=>$request->tanggal,
                     'nilai_transaksi'=>$request->nilai_transaksi,
                     'status'=>'Batal',
-            ]);
-
-            $produk = ProdukModel::all();
-            return view('layouts.produk.index', compact('produk'));
+            ]);        
             }
+            return back();
     }
 
-    public function addtrant(Request $request){
-        $tgl = date('y/d/m');
-        $bt = "batall";
-         DB::table('transaksi')->insert([
-            'kd_pembelian'=>$request->kd_pembelian,
-            'tanggal'=>$tgl,
-            'nilai_transaksi'=>$request->nilai_transaksi,
-            'status'=>$bt
-        ]);
-    }
+    // public function addtrant(Request $request){
+    //     $tgl = date('y/d/m');
+    //     $bt = "batall";
+    //      DB::table('transaksi')->insert([
+    //         'kd_pembelian'=>$request->kd_pembelian,
+    //         'tanggal'=>$tgl,
+    //         'nilai_transaksi'=>$request->nilai_transaksi,
+    //         'status'=>$bt
+    //     ]);
+    // }
 
 
 
@@ -232,6 +254,7 @@ class TransaksiController extends Controller
             'tanggal'=>$request->tanggal,
             'nilai_transaksi'=>$request->nilai_transaksi,
             'status'=>'Berhasil',
+            'updated_at' => now(),
         ]);
 
 
@@ -245,22 +268,9 @@ class TransaksiController extends Controller
             $product = ProdukModel::find(1);
             $stock = ProdukModel::where('kd_produk', $kd_produk);
             $stock->increment('stock', $request->jumlah[$x]);
-        }
-        //       //GET DATA BERDASARKAN ID
-        // $invoice = ProdukModel::where('kd_produk', $kd_produk);
-        // //LOAD PDF YANG MERUJUK KE VIEW PRINT.BLADE.PHP DENGAN MENGIRIMKAN DATA DARI INVOICE
-        // //KEMUDIAN MENGGUNAKAN PENGATURAN LANDSCAPE A4
-        // $pdf = PDF::loadView('invoice.print', compact('invoice'))->setPaper('a4', 'landscape');
-        // return $pdf->stream();
-        //     }else{
-        //             DB::table('transaksi')->insert([
-        //         'kd_pembelian'=>$request->kd_pembelian,
-        //         'tanggal'=>$request->tanggal,
-        //         'nilai_transaksi'=>$request->nilai_transaksi,
-        //         'status'=>'Batal',
-        // ]);
-             $produk = ProdukModel::all();
-        return view('layouts.produk.index', compact('produk'));
+        }      
+        $produk = ProdukModel::all();
+        return back();
         }
     }
 
