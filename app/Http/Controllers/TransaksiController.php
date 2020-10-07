@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\ModelDetailTransaksi;
 use App\ProdukModel;
 use Darryldecode\Cart\CartCondition;
+use Dompdf\Adapter\PDFLib;
 use Illuminate\Contracts\Session\Session;
 // use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use PDF;
 
 class TransaksiController extends Controller
 {
     public function index()
     {
-        //INVOICE
-
-
+        //Nomor INVOICE
         $id = DB::table("transaksi")->count();
         $ldate = date('Ymd/H:i');
         $depan = "INV/";
@@ -46,6 +47,8 @@ class TransaksiController extends Controller
         }
     }
 
+
+    //Tambah Data
     public function add()
     {
         $userId = 1; // get this from session or wherever it came from
@@ -75,61 +78,6 @@ class TransaksiController extends Controller
         ),201,[]);
     }
 
-    public function addCondition()
-    {
-        $userId = 1; // get this from session or wherever it came from
-
-        /** @var \Illuminate\Validation\Validator $v */
-        $v = validator(request()->all(),[
-            'name' => 'required|string',
-            'type' => 'required|string',
-            'target' => 'required|string',
-            'value' => 'required|string',
-        ]);
-
-        if($v->fails())
-        {
-            return response(array(
-                'success' => false,
-                'data' => [],
-                'message' => $v->errors()->first()
-            ),400,[]);
-        }
-
-        $name = request('name');
-        $type = request('type');
-        $target = request('target');
-        $value = request('value');
-
-        $cartCondition = new CartCondition([
-            'name' => $name,
-            'type' => $type,
-            'target' => $target, // this condition will be applied to cart's subtotal when getSubTotal() is called.
-            'value' => $value,
-            'attributes' => array()
-        ]);
-
-        \Cart::session($userId)->condition($cartCondition);
-
-        return response(array(
-            'success' => true,
-            'data' => $cartCondition,
-            'message' => "condition added."
-        ),201,[]);
-    }
-
-    public function clearCartConditions()
-    {
-        $userId = 1; // get this from session or wherever it came from
-
-        \Cart::session($userId)->clearCartConditions();
-
-        return response(array(
-            'success' => true,
-            'data' => [],
-            'message' => "cart conditions cleared."
-        ),200,[]);
-    }
 
     public function delete($id)
     {
@@ -141,6 +89,20 @@ class TransaksiController extends Controller
             'success' => true,
             'data' => $id,
             'message' => "cart item {$id} removed."
+        ),200,[]);
+    }
+
+
+    public function hapussemua()
+    {
+        $userId = 1; // get this from session or wherever it came from
+
+        \Cart::session()->remove();
+
+        return response(array(
+            'success' => true,
+            'data' => [],
+            'message' => "cart item removed."
         ),200,[]);
     }
 
@@ -191,39 +153,45 @@ class TransaksiController extends Controller
 
     public function savetransaksi(Request $request){
 
-        if(Input::get('submit')) {
+        if (isset($request->lanjut)) {
+             DB::table('transaksi')->insert([
+            'kd_pembelian'=>$request->kd_pembelian,
+            'tanggal'=>$request->tanggal,
+            'nilai_transaksi'=>$request->nilai_transaksi,
+            'status'=>'Berhasil',
+        ]);
 
-            return redirect('/card/'.$note->card_id); //save and go back to card
 
-        }else if(Input::get('save')){
-            return back();
+        foreach($request->kd_produk as $x => $kd_produk){
+            DB::table('detailtransaksi')->insert([
+                'kode_pembelian'=>$request->kd_pembelian,
+                'kode_produk'=>$kd_produk,
+                'jumlah'=>$request->jumlah[$x],
+            ]);
+            // DB::table('produk')->decrement('stock', $request->jumlah[$x]);
+            $product = ProdukModel::find(1);
+            $stock = ProdukModel::where('kd_produk', $kd_produk);
+            $stock->decrement('stock', $request->jumlah[$x]);
         }
+            //GET DATA BERDASARKAN ID
+            $invoice = ProdukModel::where('kd_produk', $kd_produk);
+            //LOAD PDF YANG MERUJUK KE VIEW PRINT.BLADE.PHP DENGAN MENGIRIMKAN DATA DARI INVOICE
+            //KEMUDIAN MENGGUNAKAN PENGATURAN LANDSCAPE A4
+            $pdf = PDF::loadView('invoice.print', compact('invoice'))->setPaper('a4', 'landscape');
+            return $pdf->stream();
+            }else{
+                        DB::table('transaksi')->insert([
+                    'kd_pembelian'=>$request->kd_pembelian,
+                    'tanggal'=>$request->tanggal,
+                    'nilai_transaksi'=>$request->nilai_transaksi,
+                    'status'=>'Batal',
+            ]);
 
-        //  DB::table('transaksi')->insert([
-        //     'kd_pembelian'=>$request->kd_pembelian,
-        //     'tanggal'=>$request->tanggal,
-        //     'nilai_transaksi'=>$request->nilai_transaksi,
-        //     'status'=>'Berhasil',
-    // ]);
-
-
-        // foreach($request->kd_produk as $x => $kd_produk){
-        //     DB::table('detailtransaksi')->insert([
-        //         'kode_pembelian'=>$request->kd_pembelian,
-        //         'kode_produk'=>$kd_produk,
-        //         'jumlah'=>$request->jumlah[$x],
-        //     ]);
-        //     // DB::table('produk')->decrement('stock', $request->jumlah[$x]);
-        //     $product = ProdukModel::find(1);
-        //     $stock = ProdukModel::where('kd_produk', $kd_produk);
-        //     $stock->decrement('stock', $request->jumlah[$x]);
-        // }
-
-
-
-        // $produk = ProdukModel::all();
-        // return view('layouts.produk.index', compact('produk'));
+            $produk = ProdukModel::all();
+            return view('layouts.produk.index', compact('produk'));
+            }
     }
+
     public function addtrant(Request $request){
         $tgl = date('y/d/m');
         $bt = "batall";
@@ -234,4 +202,72 @@ class TransaksiController extends Controller
             'status'=>$bt
         ]);
     }
+
+
+
+
+
+
+
+
+
+    //TRANSAKSI PEMBELIAN
+    public function indexstock()
+    {
+           //Nomor INVOICE
+           $id = DB::table("transaksi")->count();
+           $ldate = date('Ymd/H:i');
+           $depan = "Stok/";
+           $invoice = $depan.$id.'/'.$ldate;
+
+        $produk = ProdukModel::all();
+        return view('layouts.transaksi.pembelian.index', compact('produk', 'invoice'));
+    }
+
+    public function storestock(Request $request){
+
+        if (isset($request->lanjut)) {
+             DB::table('transaksi')->insert([
+            'kd_pembelian'=>$request->kd_pembelian,
+            'tanggal'=>$request->tanggal,
+            'nilai_transaksi'=>$request->nilai_transaksi,
+            'status'=>'Berhasil',
+        ]);
+
+
+        foreach($request->kd_produk as $x => $kd_produk){
+            DB::table('detailtransaksi')->insert([
+                'kode_pembelian'=>$request->kd_pembelian,
+                'kode_produk'=>$kd_produk,
+                'jumlah'=>$request->jumlah[$x],
+            ]);
+            // DB::table('produk')->decrement('stock', $request->jumlah[$x]);
+            $product = ProdukModel::find(1);
+            $stock = ProdukModel::where('kd_produk', $kd_produk);
+            $stock->increment('stock', $request->jumlah[$x]);
+        }
+        //       //GET DATA BERDASARKAN ID
+        // $invoice = ProdukModel::where('kd_produk', $kd_produk);
+        // //LOAD PDF YANG MERUJUK KE VIEW PRINT.BLADE.PHP DENGAN MENGIRIMKAN DATA DARI INVOICE
+        // //KEMUDIAN MENGGUNAKAN PENGATURAN LANDSCAPE A4
+        // $pdf = PDF::loadView('invoice.print', compact('invoice'))->setPaper('a4', 'landscape');
+        // return $pdf->stream();
+        //     }else{
+        //             DB::table('transaksi')->insert([
+        //         'kd_pembelian'=>$request->kd_pembelian,
+        //         'tanggal'=>$request->tanggal,
+        //         'nilai_transaksi'=>$request->nilai_transaksi,
+        //         'status'=>'Batal',
+        // ]);
+             $produk = ProdukModel::all();
+        return view('layouts.produk.index', compact('produk'));
+        }
+    }
+
+
+
+
+
+
+
 }

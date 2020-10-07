@@ -41,13 +41,14 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        return $request;
         DB::table('produk')->insert([
             'kd_produk' => $request->kd_produk,
             'nama' => $request->nama,
             'harga' => $request->harga,
             'stock' => $request->stock,
-            'id_kategori' => $request->id_kategori
+            'id_kategori' => $request->id_kategori,
+            'updated_at' => now(),
+
         ]);
         $produk = ProdukModel::all();        $kategori = KategoriModel::all();
         return view('layouts.produk.index', compact('produk'));

@@ -73,6 +73,9 @@
                     <li class="active">
                         <a href="{{ url ('transaksi')}}"> <i class="menu-icon fa fa-dashboard"></i>Transaksi </a>
                     </li>
+                    <li class="active">
+                        <a href="{{ url ('indexstock')}}"> <i class="menu-icon fa fa-dashboard"></i>Tambah Stock Produk</a>
+                    </li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>
@@ -125,6 +128,7 @@
     <script src="{{ asset ('style/vendors/chosen/chosen.jquery.min.js') }}"></script>
 
     <script>
+        document.getElementById('tanggal').valueAsDate = new Date();
         (function($) {
             "use strict";
 
@@ -142,14 +146,7 @@
             });
         })(jQuery);
 
-        // chosen
-        jQuery(document).ready(function() {
-        jQuery(".standardSelect").chosen({
-            disable_search_threshold: 1,
-            no_results_text: "Oops, nothing found!",
-            width: "100%"
-        });
-    });s
+
     </script>
 
 </body>

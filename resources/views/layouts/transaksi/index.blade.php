@@ -28,18 +28,9 @@
                 <div class="col-lg-4">
                     <div class="card">
                     <div class="card-body">
-                    <div class="form-group form-group-sm">
-                        <label>nama</label>
-                        <input v-model="item.name" class="form-control" value="" placeholder="" name="kode" id="kode">
-                    </div>
-                    <!-- <div class="form-group form-group-sm">
-                        <label>Name</label>
-                        <input v-model="item.name" class="form-control" placeholder="Name">
-                    </div> -->
                     <div class="form-group">
-                        <label class="control-label mb-1">kode
-                            Produk</label>
-                        <select data-placeholder="Pilih Produk" v-model="item.id" id="nama" name="nama " class="form-control" v-on:change="pilihProduk()">
+                        <label class="control-label mb-1">Scan Barcode</label>
+                        <select data-placeholder="Pilih Produk" v-model="item.id" id="nama" name="nama " class="form-control" v-on:change="pilihProduk()" autofocus>
                         <option value="">-pilih-</option>
                         @foreach($produk as $item)
                             <option value="{{$item->kd_produk}}" data-nama="{{$item->nama}}"  data-harga="{{$item->harga}}">{{$item->kd_produk}}</option>
@@ -47,14 +38,22 @@
                         </select>
                     </div>
                     <div class="form-group form-group-sm">
+                        <label>Nama Produk</label>
+                        <input v-model="item.name" class="form-control" value="" readonly placeholder="" name="kode" id="kode">
+                    </div>
+                    <!-- <div class="form-group form-group-sm">
+                        <label>Name</label>
+                        <input v-model="item.name" class="form-control" placeholder="Name">
+                    </div> -->
+                    <div class="form-group form-group-sm">
                         <label>Harga</label>
-                        <input v-model="item.price" class="form-control" placeholder="Price" id="harga" name="harga">
+                        <input v-model="item.price" class="form-control" placeholder="Price" id="harga" readonly name="harga">
                     </div>
                     <div class="form-group form-group-sm">
                         <label>Qty</label>
                         <input v-model="item.qty" class="form-control" placeholder="Quantity">
                     </div>
-                    <button v-on:click="addItem()" class="btn btn-primary btn-lg btn-block">Tambah</button>
+                    <button v-on:click="addItem()" class="btn btn-primary btn-lg btn-block" autofocus>Tambah</button>
                     </div>
                     </div>
                 </div>
@@ -65,11 +64,11 @@
                     {{csrf_field()}}
                 <div class="form-group form-group-sm">
                     <label>No. Invoice</label>
-                    <input id="kd_pembelian" name="kd_pembelian" class="form-control" readonly value="{{$invoice}}" placeholder="Quantity">
+                    <input value="  <?php echo date('Y-m-d'); ?>" id="kd_pembelian" name="kd_pembelian" class="form-control" readonly value="{{$invoice}}" placeholder="Quantity">
                 </div>
                 <div class="form-group form-group-sm">
                     <label>Tanggal</label>
-                    <input id="tanggal" name="tanggal" class="form-control" type="date">
+                    <input type="date" name="tanggal" id="tanggal" class="form-control">
                 </div>
                 <div class="form-group form-group-sm">
                         <label>TOTAL</label>
@@ -87,8 +86,8 @@
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <button type="submit" class="btn btn-primary" name="submit" value="submit">Save & Go BACK</button>
-                    <button type="submit" class="btn btn-primary" name="save" value ="save">Save Note</button>
+                    <button type="submit" class="btn btn-delete" id="batal" v-on:click="hapussemua()" name="batal" value="batal">Batal</button>
+                    <button type="submit" class="btn btn-primary" id="lanjut" name="lanjut" value ="lanjut">Lanjut</button>
                     <tbody>
                         <br>
                         <br>
@@ -118,6 +117,30 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
 <script>
+
+$(document).ready(function() {
+    var date = new Date();
+
+    var day = date.getDate();
+    var month = date.getMonth() + 1;
+    var year = date.getFullYear();
+
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+
+    var today = year + "-" + month + "-" + day;
+    $("#tanggal").attr("value", today);
+});
+
+
+        // chosen
+        jQuery(document).ready(function() {
+        jQuery(".standardSelect").chosen({
+            disable_search_threshold: 10,
+            no_results_text: "Oops, nothing found!",
+            width: "100%"
+        });
+    });
 
     function changeEventHandler(v) {
     var nama = document.getElementById("total").value ;
@@ -220,7 +243,7 @@
 
                         var _this = this;
 
-                        this.$http.delete('/cart/conditions?_token=' + _token).then(function(success) {
+                        this.$http.delete('/hapussemua?_token=' + _token).then(function(success) {
                             _this.loadItems();
                         }, function(error) {
                             console.log(error);
@@ -239,6 +262,18 @@
                         }, function(error) {
                             console.log(error);
                         });
+                    },
+                    hapussemua: function() {
+
+
+
+                    var _this = this;
+
+                    this.$http.delete('/hapussemua?_token=' + _token).then(function(success) {
+                        _this.loadItems();
+                    }, function(error) {
+                        console.log(error);
+                    });
                     },
                     loadItems: function() {
 

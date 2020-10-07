@@ -46,6 +46,11 @@ Route::get('transaksi', 'TransaksiController@index');
 Route::get('dotransaksi', 'TransaksiController@dotransaksi');
 Route::get('tampil', 'TransaksiController@tampilkanSession');
 
+//transaksi pembelian
+Route::get('indexstock', 'TransaksiController@indexstock');
+Route::get('transaksi', 'TransaksiController@index');
+Route::get('trxansaksi', 'TransaksiController@index');
+
 //
 //
 Route::get('carts', 'TransaksiController@cartstore');
@@ -53,8 +58,11 @@ Route::get('carts', 'TransaksiController@cartstore');
 Route::get('/cart','TransaksiController@index')->name('transaksi.index');
 Route::post('/cart','TransaksiController@add')->name('transaksi.add');
 Route::post('/cart/conditions','TransaksiController@addCondition')->name('transaksi.addCondition');
-Route::delete('/cart/conditions','TransaksiController@clearCartConditions')->name('transaksi.clearCartConditions');
 Route::get('/cart/details','TransaksiController@details')->name('transaksi.details');
 Route::delete('/cart/{id}','TransaksiController@delete')->name('transaksi.delete');
+Route::delete('/hapussemua/','TransaksiController@hapussemua')->name('transaksi.hapussemua');
 
 Route::post('/addtran','TransaksiController@savetransaksi');
+Route::post('/storestock','TransaksiController@storestock');
+
+
