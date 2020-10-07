@@ -23,27 +23,26 @@
 @section('content')
 <div class="animated fadeIn">
     <div class="row" id="app">
-    <h1>Vue: @{{message}}</h1>
-      <input v-model="message">
         <br>
-            <div class="container cart">
+        <div class="container cart">
                 <div class="col-lg-4">
                     <div class="card">
                     <div class="card-body">
                     <div class="form-group form-group-sm">
-                        <label>Nama</label>
-                        <input v-model="item.name" class="form-control" value="@{{message}}" placeholder="">
+                        <label>nama</label>
+                        <input v-model="item.name" class="form-control" value="" placeholder="" name="kode" id="kode">
                     </div>
                     <!-- <div class="form-group form-group-sm">
                         <label>Name</label>
                         <input v-model="item.name" class="form-control" placeholder="Name">
                     </div> -->
                     <div class="form-group">
-                        <label class="control-label mb-1">Nama Produk</label>
-                        <select data-placeholder="Pilih Produk" v-model="item.id" onchange="changeEventHandler(this);" id="nama" name="nama " class="form-control">
+                        <label class="control-label mb-1">kode
+                            Produk</label>
+                        <select data-placeholder="Pilih Produk" v-model="item.id" id="nama" name="nama " class="form-control" v-on:change="pilihProduk()">
                         <option value="">-pilih-</option>
                         @foreach($produk as $item)
-                            <option value="{{$item->id}}" nama="{{$item->nama}}" harga="{{$item->harga}}">{{$item->kd_produk}}-{{$item->nama}}</option>
+                            <option value="{{$item->kd_produk}}" data-nama="{{$item->nama}}"  data-harga="{{$item->harga}}">{{$item->kd_produk}}</option>
                         @endforeach
                         </select>
                     </div>
@@ -62,7 +61,7 @@
             <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
-                <form action="/addtran" method="post">
+                <form action="{{url ('addtran')}}" method="post">
                     {{csrf_field()}}
                 <div class="form-group form-group-sm">
                     <label>No. Invoice</label>
@@ -78,7 +77,7 @@
                         <option v-bind:value="details.sub_total">@{{ details.sub_total }}</option>
                         </select>
                 </div>
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered" id="table01">
                     <thead>
                     <tr>
                         <th>ID</th>
@@ -88,18 +87,18 @@
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <div class="form-group form-group-sm">
-                    <button type="submit" class="btn btn-primary btn-lg btn-block">Lanjut</button>
-                    </div>
-
+                    <button type="submit" class="btn btn-primary" name="submit" value="submit">Save & Go BACK</button>
+                    <button type="submit" class="btn btn-primary" name="save" value ="save">Save Note</button>
                     <tbody>
+                        <br>
+                        <br>
                     <tr v-for="item in items">
-                        <td>@{{ item.id }}</td>
+                        <td name="idd" id="idd" v-bind:value="item.id">@{{ item.id }}<input hidden type="text" name="kd_produk[]" v-model="item.id"></td>
                         <td>@{{ item.name }}</td>
-                        <td>@{{ item.quantity }}</td>
+                        <td name="jumlah" id="jumlah" v-bind:value="item.quantity">@{{ item.quantity }}<input hidden type="text" name="jumlah[]" v-model="item.quantity"></td>
                         <td>@{{ item.price }}</td>
                         <td>
-                            <button v-on:click="removeItem(item.id)" class="btn btn-sm btn-danger">remove</button>
+                            <button type="button" v-on:click="removeItem(item.id)" class="btn btn-sm btn-danger">remove</button>
                         </td>
                     </tr>
                     </tbody>
@@ -119,6 +118,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 
 <script>
+
     function changeEventHandler(v) {
     var nama = document.getElementById("total").value ;
     var y = $(v).find('option:selected').attr('nama');
@@ -176,6 +176,14 @@
                     this.loadItems();
                 },
                 methods: {
+                    pilihProduk: function(){
+                        var button =$('#nama').find('option:selected');
+                        var harga = button.data('harga')
+                        var nama = button.data('nama')
+                        this.item.name = nama ;
+                        this.item.price = harga;
+
+                    },
                     addItem: function() {
 
                         var _this = this;

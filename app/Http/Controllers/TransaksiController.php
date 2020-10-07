@@ -1,15 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: darryl
- * Date: 4/30/2017
- * Time: 10:58 AM
- */
 
 namespace App\Http\Controllers;
 
 use App\ProdukModel;
 use Darryldecode\Cart\CartCondition;
+use Illuminate\Contracts\Session\Session;
 // use GuzzleHttp\Psr7\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -20,7 +15,8 @@ class TransaksiController extends Controller
     {
         //INVOICE
 
-         $id = DB::table('transaksi')->desc()->limit=1;
+
+        $id = DB::table("transaksi")->count();
         $ldate = date('Ymd/H:i');
         $depan = "INV/";
         $invoice = $depan.'/'.$id.'/'.$ldate;
@@ -193,40 +189,40 @@ class TransaksiController extends Controller
         ),200,[]);
     }
 
-     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    public function savetransaksi(Request $request){
 
-    public function addtran(Request $request)
-    {
-        //     'kd_pembelian'=>$request->kd_pembelian,
-        return $request->all();
-        // $tgl = date('y/m/d');
-        // $bt = "berhasil";
+        if(Input::get('submit')) {
+
+            return redirect('/card/'.$note->card_id); //save and go back to card
+
+        }else if(Input::get('save')){
+            return back();
+        }
 
         //  DB::table('transaksi')->insert([
         //     'kd_pembelian'=>$request->kd_pembelian,
-        //     'tanggal'=>$tgl,
+        //     'tanggal'=>$request->tanggal,
         //     'nilai_transaksi'=>$request->nilai_transaksi,
-        //     'status'=>$bt
-        // ]);
-        // $produk = ProdukModel::all();
-        //return redirect('/cart');
-    }
-    public function savetransaksi(Request $request){
-         //     'kd_pembelian'=>$request->kd_pembelian,
-         DB::table('transaksi')->insert([
-            'kd_pembelian'=>$request->kd_pembelian,
-            'tanggal'=>$request->tanggal,
-            'nilai_transaksi'=>$request->nilai_transaksi,
-            'status'=>'Berhasil',
-        ]);
+        //     'status'=>'Berhasil',
+    // ]);
 
-        $produk = ProdukModel::all();
-        return view('layouts.produk.index', compact('produk'));
+
+        // foreach($request->kd_produk as $x => $kd_produk){
+        //     DB::table('detailtransaksi')->insert([
+        //         'kode_pembelian'=>$request->kd_pembelian,
+        //         'kode_produk'=>$kd_produk,
+        //         'jumlah'=>$request->jumlah[$x],
+        //     ]);
+        //     // DB::table('produk')->decrement('stock', $request->jumlah[$x]);
+        //     $product = ProdukModel::find(1);
+        //     $stock = ProdukModel::where('kd_produk', $kd_produk);
+        //     $stock->decrement('stock', $request->jumlah[$x]);
+        // }
+
+
+
+        // $produk = ProdukModel::all();
+        // return view('layouts.produk.index', compact('produk'));
     }
     public function addtrant(Request $request){
         $tgl = date('y/d/m');
