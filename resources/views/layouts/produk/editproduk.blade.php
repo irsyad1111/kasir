@@ -1,13 +1,9 @@
 @extends('panel.main')
 
 @section('content')
-<div class="card-body">
-        <!-- Credit Card -->
-        <div id="pay-invoice">
-            <div class="card-body">
-                <div class="card-title">
-                    <h3 class="text-center">Tambah Kategori</h3>
-                </div>
+    <div class="col-sm-12">
+        <div class="mt-4 mb-3 p-3 button-container bg-white border shadow-sm">
+        <h6 class="mb-2">Edit Produk</h6>
                 <hr>@foreach($produk as $seri)
                 <form action="{{url('editproduk/'.$seri->id)}}" method="post">
                     @csrf
@@ -36,26 +32,22 @@
                             @endforeach
                         <div class="form-group">
                             <select data-placeholder="Pilih Kategori Produk " class="form-control" id="id_kategori" name="id_kategori">
-                                <option value=""></option>
+                                <option value="">Pilih Kategori Produk</option>
                             @foreach($kategori as $item)
                                 <option value="{{$item->id}}">{{$item->nama_kategori}}</option>
                             @endforeach
                             </select>
                         </div>
                         </div>
-
+                        <button type="simpan" class="btn btn-primary shadow">Simpan</button>
                         </div>
                         </div>
                         </div>
                         <div>
-                            <button id="payment-button" type="submit" class="btn btn-lg btn-info btn-block">
-                                <span id="payment-button-amount">SIMPAN</span>
-                            </button>
+                        </button>
                         </div>
                 </form>
             </div>
         </div>
-
     </div>
-</div> <!-- .card -->
 @endsection

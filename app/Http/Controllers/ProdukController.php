@@ -41,17 +41,37 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        DB::table('produk')->insert([
-            'kd_produk' => $request->kd_produk,
-            'nama' => $request->nama,
-            'harga' => $request->harga,
-            'stock' => $request->stock,
-            'id_kategori' => $request->id_kategori,
-            'updated_at' => now(),
+        $produkk = ProdukModel::where('kd_produk', '=', $request->kd_produk)->first();
+        if ($produkk == null) {
 
-        ]);
-        $produk = ProdukModel::all();        $kategori = KategoriModel::all();
-        return view('layouts.produk.index', compact('produk'));
+            $request->validate([
+                'kd_produk' => 'required',
+                'nama' => 'required',
+                'harga' => 'required',
+                'stock' => 'required',
+            ]);
+            DB::table('produk')->insert([
+                'kd_produk' => $request->kd_produk,
+                'nama' => $request->nama,
+                'harga' => $request->harga,
+                'stock' => $request->stock,
+                'id_kategori' => $request->id_kategori,
+                'updated_at' => now(),
+
+            ]);
+            $produk = ProdukModel::all();        $kategori = KategoriModel::all();
+            return view('layouts.produk.index', compact('produk'));
+        }else{
+            $request->validate([
+                'kd_produk' => 'required',
+                'nama' => 'required',
+                'harga' => 'required',
+                'stock' => 'required',
+            ]);
+            $produk = ProdukModel::all();
+            $kategori = KategoriModel::all();
+            return view('layouts.produk.addproduk', compact('produk', 'kategori'));
+    }
     }
 
     /**

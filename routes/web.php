@@ -13,9 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', 'DashboardController@index');
 
 Route::get('main', function() {
     return view('panel.main');
@@ -67,5 +66,8 @@ Route::delete('/hapussemua/','TransaksiController@hapussemua')->name('transaksi.
 
 Route::post('/addtran','TransaksiController@savetransaksi');
 Route::post('/storestock','TransaksiController@storestock');
+
+route::post('/proses','TransaksiController@proces');
+route::get('/proses1','TransaksiController@proces');
 
 

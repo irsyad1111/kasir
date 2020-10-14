@@ -1,36 +1,15 @@
 @extends('panel.main')
 
-@section('breadcrumbs')
-<div class="breadcrumbs">
-    <div class="col-sm-4">
-        <div class="page-header float-left">
-            <div class="page-title">
-                <h1>Transaksi</h1>
-            </div>
-        </div>
-    </div>
-    <div class="col-sm-8">
-        <div class="page-header float-right">
-            <div class="page-title">
-                <ol class="breadcrumb text-right">
-                    <li class="active">Data Produk</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</div>
-@endsection
 @section('content')
-<div class="animated fadeIn">
-    <div class="row" id="app">
-        <br>
-        <div class="container cart">
+<div class="mt-1 mb-3 button-container">
+<div class="row pl-0" id="app">
+
                 <div class="col-lg-4">
                     <div class="card">
                     <div class="card-body">
                     <div class="form-group">
                         <label class="control-label mb-1">Scan Barcode</label>
-                        <select data-placeholder="Pilih Produk" v-model="item.id" id="nama" name="nama " class="form-control" v-on:change="pilihProduk()" autofocus>
+                        <select data-placeholder="Pilih Produk" v-model="item.id" id="nama" name="nama " class="form-control" v-on:change="pilihProduk()" autofocus required>
                         <option value="">-pilih-</option>
                         @foreach($produk as $item)
                             <option value="{{$item->kd_produk}}" data-nama="{{$item->nama}}"  data-harga="{{$item->harga}}">{{$item->kd_produk}}</option>
@@ -53,14 +32,14 @@
                         <label>Qty</label>
                         <input v-model="item.qty" class="form-control" placeholder="Quantity">
                     </div>
-                    <button v-on:click="addItem()" class="btn btn-primary btn-lg btn-block" autofocus>Tambah</button>
+                    <button v-on:click="addItem()" class="btn btn-primary btn-lg btn-block shadow" autofocus>Tambah</button>
                     </div>
                     </div>
                 </div>
             <div class="col-lg-8">
             <div class="card">
                 <div class="card-body">
-                <form action="{{url ('addtran')}}" method="post">
+                <form action="{{url ('storestock')}}" method="post">
                     {{csrf_field()}}
                 <div class="form-group form-group-sm">
                     <label>No. Invoice</label>
@@ -87,19 +66,20 @@
                         <th>Action</th>
                     </tr>
                     </thead>
-                    <button type="button" v-on:click="removeall()" class="btn btn-sm btn-danger">Reset Item</button>
-                    <button type="submit" class="btn btn-delete" v-on:click="removeall()" id="batal" v-on:click="hapussemua()" name="batal" value="batal">Batal</button>
-                    <button type="submit" class="btn btn-primary"  v-on:click="removeall()" id="lanjut" name="lanjut" value ="lanjut">Lanjut</button>
+                    <div class="row">
+                    <div class="col-2"><button type="button" class="btn btn-danger shadow" v-on:click="removeall()">Reset Item</button></div>
+                    <div class="col-8"><button type="submit" class="btn btn-secondary shadow" v-on:click="removeall()" id="batal" v-on:click="hapussemua()" name="batal" value="batal">Batal</button></div>
+                    <div class="col-2"><button type="submit" class="btn btn-primary shadow"  v-on:click="removeall()" id="lanjut" name="lanjut" value ="lanjut">Lanjut</button></div>
+                    </div>
+                    <hr>
                     <tbody id="mangan">
-                        <br>
-                        <br>
                     <tr v-for="item in items">
                         <td name="idd" id="idd" v-bind:value="item.id">@{{ item.id }} <input hidden type="text" name="kd_produk[]" v-model="item.id"></td>
                         <td>@{{ item.name }}</td>
                         <td name="jumlah" id="jumlah" v-bind:value="item.quantity">@{{ item.quantity }}<input hidden type="text" name="jumlah[]" v-model="item.quantity"></td>
                         <td>@{{ item.price }}</td>
-                        <td>
-                            <button type="button" v-on:click="removeItem(item.id)" class="btn btn-sm btn-danger">remove</button>
+                        <td align="center">
+                            <button type="button" v-on:click="removeItem(item.id)" class="btn btn-sm btn-danger shadow"><i class="fa fa-trash"></i></button>
                         </td>
                     </tr>
                     </tbody>
@@ -108,7 +88,7 @@
             </div>
             </div>
             </div>
-        </div>
+
     </div>
 </div>
 
@@ -219,7 +199,7 @@ $(document).ready(function() {
                         data.push(res[0]);
                     }
                     // $id = "pd00" + tes;
-                  
+
                     // alert(data);
                      $id = data ;
                      var _this = this;

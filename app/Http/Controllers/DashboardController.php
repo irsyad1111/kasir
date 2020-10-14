@@ -1,6 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\KategoriModel;
+use App\ModelDetailTransaksi;
+use App\ModelTransaksi;
 use App\ProdukModel;
 
 use Illuminate\Http\Request;
@@ -14,8 +18,14 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $date = date('Y-m-d');
         $count = ProdukModel::count();
-        return view('layouts.dashboard')->with('count', $count);
+        $kategori = KategoriModel::count();
+        $transaksi = ModelDetailTransaksi::count();
+        $transaksiberhasil = ModelTransaksi::where('status','=','berhasil')->count();
+        $transaksibatal = ModelTransaksi::where('status','=','batal')->count();
+        $terjualharini = ModelTransaksi::where('tanggal','=',$date)->count();
+        return view('layouts.dashboard', compact('count', 'kategori', 'transaksi', 'transaksiberhasil', 'transaksibatal', 'terjualharini'));
     }
 
     /**

@@ -20,7 +20,7 @@ class TransaksiController extends Controller
         $id = DB::table("transaksi")->count();
         $ldate = date('Ymd/H:i');
         $depan = "INV/";
-        $invoice = $depan.'/'.$id.'/'.$ldate;
+        $invoice = $depan.$id.'/'.$ldate;
 
         $no = 1;
         $produk = ProdukModel::all();
@@ -98,14 +98,14 @@ class TransaksiController extends Controller
     public function delete1($id)
     {
         // return $id;
-        
+
         $userId = 1; // get this from session or wherever it came from
         $id = explode(',', $id);
-        
+
         foreach($id as $id ){
 
         \Cart::session($userId)->remove($id);
-        
+
        }
 
        return response(array(
@@ -174,7 +174,12 @@ class TransaksiController extends Controller
         ),200,[]);
     }
 
-    public function savetransaksi(Request $request){
+    public function savetransaksi(Request $request)
+    {
+       $request->validate([
+        'kd_produk' => 'required',
+        'jumlah' => 'required',
+        ]);
 
         if (isset($request->lanjut)) {
              DB::table('transaksi')->insert([
@@ -197,20 +202,17 @@ class TransaksiController extends Controller
             $stock = ProdukModel::where('kd_produk', $kd_produk);
             $stock->decrement('stock', $request->jumlah[$x]);
         }
-            // //GET DATA BERDASARKAN ID
-            // $invoice = ProdukModel::where('kd_produk', $kd_produk);
-            // //LOAD PDF YANG MERUJUK KE VIEW PRINT.BLADE.PHP DENGAN MENGIRIMKAN DATA DARI INVOICE
-            // //KEMUDIAN MENGGUNAKAN PENGATURAN LANDSCAPE A4
-            // $pdf = PDF::loadView('invoice.print', compact('invoice'))->setPaper('a4', 'landscape');
-            // return $pdf->stream();
-            }else{
-                        DB::table('transaksi')->insert([
+        $kodebro = $request->kd_pembelian;
+        return view("layouts.invoice.proses", compact('kodebro'));
+        }else{
+                    DB::table('transaksi')->insert([
                     'kd_pembelian'=>$request->kd_pembelian,
                     'tanggal'=>$request->tanggal,
                     'nilai_transaksi'=>$request->nilai_transaksi,
                     'status'=>'Batal',
-            ]);        
-            }
+            ]);
+            return back();
+        }
             return back();
     }
 
@@ -248,6 +250,11 @@ class TransaksiController extends Controller
 
     public function storestock(Request $request){
 
+        $request->validate([
+            'kd_produk' => 'required',
+            'jumlah' => 'required',
+            ]);
+
         if (isset($request->lanjut)) {
              DB::table('transaksi')->insert([
             'kd_pembelian'=>$request->kd_pembelian,
@@ -268,16 +275,34 @@ class TransaksiController extends Controller
             $product = ProdukModel::find(1);
             $stock = ProdukModel::where('kd_produk', $kd_produk);
             $stock->increment('stock', $request->jumlah[$x]);
-        }      
+        }
         $produk = ProdukModel::all();
         return back();
         }
     }
 
+    public function proces(Request $request){
+        // return $request->kode;
 
+       $transaksi = DB::table('transaksi')->where("kd_pembelian", $request->kode )->get();
 
+       $detai = Db::table('detailtransaksi')->where("kode_pembelian", $request->kode)->get();
+       foreach($detai as $tl){
+            $kodebar= $tl->kode_produk;
+            $tl->detail_produk = DB::table("produk")->where("kd_produk",$tl->kode_produk)->first();
+       }
+            //$kodebar= explode(',', $kodebar);
 
+      $thtn =  ['thtn' => $transaksi];
+      $prd =   ['prd' => $detai];
 
+    // dd($detai[0]->detail_produk->nama);
+
+        $pdf = PDF::loadView('layouts.invoice.cetak', $thtn, $prd);
+
+        return $pdf->stream();
+
+    }
 
 
 }

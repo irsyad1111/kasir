@@ -1,168 +1,194 @@
 
-<!doctype html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
-<!--[if gt IE 8]><!-->
-<html class="no-js" lang="en">
-<!--<![endif]-->
-
-<head>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
+    <meta name="description" content="" >
+    <meta name="author" content="">
+    <meta name="keywords" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Kasir CRUD</title>
-    <meta name="description" content="Sufee Admin - HTML5 Admin Template">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="apple-touch-icon" href="apple-icon.png">
-    <link rel="shortcut icon" href="favicon.ico">
+    <!--Meta Responsive tag-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <link rel="stylesheet" href="{{ asset ('style/vendors/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset ('style/vendors/font-awesome/css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset ('style/vendors/themify-icons/css/themify-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset ('style/vendors/flag-icon-css/css/flag-icon.min.css') }}">
-    <link rel="stylesheet" href="{{ asset ('style/vendors/selectFX/css/cs-skin-elastic.css') }}">
-    <link rel="stylesheet" href="{{ asset ('style/vendors/jqvmap/dist/jqvmap.min.css') }}">
-    <!-- table -->
-    <link rel="stylesheet" href="{{ asset ('style/vendors/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset ('style/vendors/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
-    <link rel="stylesheet" href="{{ asset ('style/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}">
-
-    <!-- Choosen -->
-    <link rel="stylesheet" href="{{ asset ('style/vendors/chosen/chosen.min.css') }}">
-
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
-
-
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="{{ asset ('style/assets/css/bootstrap.min.css') }}">
+    <!--Custom style.css-->
+    <link rel="stylesheet" href="{{ asset ('style/assets/css/quicksand.css') }}">
     <link rel="stylesheet" href="{{ asset ('style/assets/css/style.css') }}">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="{{ asset ('style/assets/css/fontawesome-all.min.css') }}">
+    <link rel="stylesheet" href="{{ asset ('style/assets/css/fontawesome.css') }}">
+    <!--Weather Icons-->
+    <link rel="stylesheet" href="{{ asset ('style/assets/css/weather-icons.min.css') }}">
+    <!--Chartist CSS-->
+    <link rel="stylesheet" href="{{ asset ('style/assets/css/chartist.min.css') }}">
+    <!--Bootstrap Calendar-->
+    <link rel="stylesheet" href="{{ asset ('style/assets/js/calendar/bootstrap_calendar.css') }}">
+    <!-- Datatable -->
+    <link rel="stylesheet" href="{{ asset ('style/assets/css/dataTables.bootstrap4.min.css') }}">
 
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-</head>
+    <title>Bismillah</title>
+  </head>
+  <body>
+    <!--Page loader-->
+    <div class="loader-wrapper">
+        <div class="loader-circle">
+            <div class="loader-wave"></div>
+        </div>
+    </div>
+    <!--Page loader-->
 
-<body>
+    <!--Page Wrapper-->
 
+    <div class="container-fluid">
 
-    <!-- Left Panel -->
+        <!--Header-->
+        <div class="row header shadow-sm">
 
-    <aside id="left-panel" class="left-panel">
-        <nav class="navbar navbar-expand-sm navbar-default">
-
-            <div class="navbar-header">
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fa fa-bars"></i>
-                </button>
-                <a class="navbar-brand" href="./"><img src="{{ asset ('style/images/logo.png') }}" alt="Logo"></a>
-                <a class="navbar-brand hidden" href="./"><img src="{{ asset ('style/images/logo2.png') }}" alt="Logo"></a>
+            <!--Logo-->
+            <div class="col-sm-3 pl-0 text-center header-logo">
+               <div class="bg-theme mr-3 pt-3 pb-2 mb-0">
+                    <h3 class="logo"><a href="#" class="text-secondary logo"><i class="fa fa-rocket"></i> Bismillah<span class="small"></span></a></h3>
+               </div>
             </div>
+            <!--Logo-->
 
-            <div id="main-menu" class="main-menu collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="{{ url ('dashboard')}}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
-                    </li>
-                    <h3 class="menu-title">Data Barang</h3><!-- /.menu-title -->
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Produk</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-puzzle-piece"></i><a href="{{ url ('produk')}}">Data Produk</a></li>
-                            <li><i class="fa fa-puzzle-piece"></i><a href="{{ url ('kategori')}}">Kategori Produk</a></li>
-                        </ul>
-                    </li>
-                    <li class="active">
-                        <a href="{{ url ('transaksi')}}"> <i class="menu-icon fa fa-dashboard"></i>Transaksi </a>
-                    </li>
-                    <li class="active">
-                        <a href="{{ url ('indexstock')}}"> <i class="menu-icon fa fa-dashboard"></i>Tambah Stock Produk</a>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-laptop"></i>Laporan</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-puzzle-piece"></i><a href="{{ url ('laporan')}}">Laporan Transaksi</a></li>                            
-                        </ul>
-                    </li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </nav>
-    </aside><!-- /#left-panel -->
+            <!--Header Menu-->
+            <div class="col-sm-9 header-menu pt-2 pb-0">
+                <div class="row">
 
-    <!-- Left Panel -->
-
-    <!-- Right Panel -->
-
-    <div id="right-panel" class="right-panel">
-        <header id="header" class="header">
-
-            <div class="header-menu">
-
-                <div class="col-sm-7">
-    <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
-    @yield('breadcrumbs')
+                    <!--Menu Icons-->
+                    <div class="col-sm-4 col-8 pl-0">
+                        <!--Toggle sidebar-->
+                        <span class="menu-icon" onclick="toggle_sidebar()">
+                            <span id="sidebar-toggle-btn"></span>
+                        </span>
+                        <!--Toggle sidebar-->
+                        <!--Notification icon-->
+                        <span class="menu-icon">
+                            <i class="fa fa-th-large"></i>
+                        </span>
+                    </div>
+                    <!--Menu Icons-->
                 </div>
             </div>
+            <!--Header Menu-->
+        </div>
+        <!--Header-->
 
-        <div class="content mt-3">
+        <!--Main Content-->
 
+        <div class="row main-content">
+            <!--Sidebar left-->
+            <div class="col-sm-3 col-xs-6 sidebar pl-0">
+                <div class="inner-sidebar mr-3">
+                    <!--Image Avatar-->
+                    <div class="avatar text-center">
+                        <img src="{{ asset('style/images/admin.jpg')}}" alt="" class="rounded-circle" />
+                        <p><strong>Bismillah</strong></p>
+                        <span class="text-primary small"><strong>Admin</strong></span>
+                    </div>
+                    <!--Image Avatar-->
+
+                    <!--Sidebar Navigation Menu-->
+                    <div class="sidebar-menu-container">
+                        <ul class="sidebar-menu mt-4 mb-4">
+                        <li class="parent">
+                            <a href="{{ url ('dashboard')}}" class=""><i class="fa fa-puzzle-piece mr-3"></i>
+                                <span class="none">Dashboard </span>
+                            </a>
+                        </li>
+                        <li class="parent">
+                            <a href="#" onclick="toggle_menu('produk'); return false" class=""><i class="fa fa-dashboard mr-3"> </i>
+                                <span class="none">Produk <i class="fa fa-angle-down pull-right align-bottom"></i></span>
+                            </a>
+                            <ul class="children" id="produk">
+                                <li class="child"><a href="{{ url ('produk')}}" class="ml-4"><i class="fa fa-angle-right mr-2"></i> Data Produk</a></li>
+                                <li class="child"><a href="{{ url ('kategori')}}" class="ml-4"><i class="fa fa-angle-right mr-2"></i> Kategori Produk</a></li>
+                            </ul>
+                        </li>
+                        <li class="parent">
+                            <a href="{{ url ('transaksi')}}" class=""><i class="fa fa-puzzle-piece mr-3"></i>
+                                <span class="none">Transaksi </span>
+                            </a>
+                        </li>
+                        <li class="parent">
+                            <a href="{{ url ('indexstock')}}" class=""><i class="fa fa-puzzle-piece mr-3"></i>
+                                <span class="none">Stock In </span>
+                            </a>
+                        </li>
+                        <li class="parent">
+                            <a href="" onclick="toggle_menu('laporan'); return false" class=""><i class="fa fa-list-ul"> </i>
+                                <span class="none">Laporan <i class="fa fa-angle-down pull-right align-bottom"></i></span>
+                            </a>
+                            <ul class="children" id="laporan">
+                                <li class="child"><a href="{{ url ('laporan')}}" class="ml-4"><i class="fa fa-angle-right mr-2"></i>Laporan Penjualan</a></li>
+                            </ul>
+                        </li>
+                        </li>
+                        </ul>
+                    </div>
+                    <!--Sidebar Naigation Menu-->
+                </div>
+            </div>
+            <!--Sidebar left-->
+
+            <!--Content right-->
+            <div class="col-sm-9 col-xs-12 content pt-3 pl-0">
+        @yield('breadcrumbs')
+        <div class="row mt-3">
+            <div class="col-sm-12">
         @yield('content')
+            </div>
+        </div>
+            <!-- //isi content -->
+            </div>
+        </div>
 
+        <!--Main Content-->
 
-        </div> <!-- .content -->
-    </div><!-- /#right-panel -->
+    </div>
 
-    <!-- Right Panel -->
+    <!--Page Wrapper-->
 
-    <script src="{{ asset ('style/vendors/jquery/dist/jquery.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/popper.js/dist/umd/popper.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset ('style/assets/js/main.js') }}"></script>
+    <!-- Page JavaScript Files-->
+    <script src="{{ asset ('style/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset ('style/assets/js/jquery-1.12.4.min.js') }}"></script>
+    <!--Popper JS-->
+    <script src="{{ asset ('style/assets/js/popper.min.js') }}"></script>
+    <!--Bootstrap-->
+    <script src="{{ asset ('style/assets/js/bootstrap.min.js') }}"></script>
+    <!--Sweet alert JS-->
+    <script src="{{ asset ('style/assets/js/sweetalert.js') }}"></script>
+    <!--Progressbar JS-->
+    <script src="{{ asset ('style/assets/js/progressbar.min.js') }}"></script>
+    <!--Charts-->
+    <!--Canvas JS-->
+    <script src="{{ asset ('style/assets/js/charts/canvas.min.js') }}"></script>
+    <!--easy pie chart-->
+    <script src="{{ asset ('style/assets/js/jquery.easypiechart.min.js') }}"></script>
+    <!--echarts chart-->
+    <script src="{{ asset ('style/assets/js/charts/echarts.min.js') }}"></script>
+    <!--Bootstrap Calendar JS-->
+    <script src="{{ asset ('style/assets/js/calendar/bootstrap_calendar.js') }}"></script>
+    <script src="{{ asset ('style/assets/js/calendar/demo.js') }}"></script>
+    <!--Bootstrap Calendar-->
 
-    @yield('scriptjs')
-    <script src="{{ asset ('style/vendors/chart.js/dist/Chart.bundle.min.js') }}"></script>
-    <script src="{{ asset ('style/assets/js/dashboard.js') }}"></script>
-    <script src="{{ asset ('style/assets/js/widgets.js') }}"></script>
-    <script src="{{ asset ('style/vendors/jqvmap/dist/jquery.vmap.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js') }}"></script>
-    <script src="{{ asset ('style/vendors/jqvmap/dist/maps/jquery.vmap.world.js') }}"></script>
-
-    <!-- table -->
-    <script src="{{ asset ('style/vendors/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/jszip/dist/jszip.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/pdfmake/build/pdfmake.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/pdfmake/build/vfs_fonts.js') }}"></script>
-    <script src="{{ asset ('style/vendors/datatables.net-buttons/js/buttons.html5.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/datatables.net-buttons/js/buttons.print.min.js') }}"></script>
-    <script src="{{ asset ('style/vendors/datatables.net-buttons/js/buttons.colVis.min.js') }}"></script>
-    <script src="{{ asset ('style/assets/js/init-scripts/data-table/datatables-init.js') }}"></script>
-
-    <!-- chosen -->
-    <script src="{{ asset ('style/vendors/chosen/chosen.jquery.min.js') }}"></script>
-
+    <!--Custom Js Script-->
+    <script src="{{ asset ('style/assets/js/custom.js') }}"></script>
+    <!--Custom Js Script-->
+    <!--Datatable-->
+    <script src="{{ asset ('style/assets/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset ('style/assets/js/dataTables.bootstrap4.min.js') }}"></script>
     <script>
-        document.getElementById('tanggal').valueAsDate = new Date();
-        (function($) {
-            "use strict";
-
-            jQuery('#vmap').vectorMap({
-                map: 'world_en',
-                backgroundColor: null,
-                color: '#ffffff',
-                hoverOpacity: 0.7,
-                selectedColor: '#1de9b6',
-                enableZoom: true,
-                showTooltip: true,
-                values: sample_data,
-                scaleColors: ['#1de9b6', '#03a9f5'],
-                normalizeFunction: 'polynomial'
-            });
-        })(jQuery);
-
-
+        $('#example').DataTable();
     </script>
-
-</body>
-
+  </body>
 </html>

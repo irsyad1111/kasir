@@ -38,12 +38,18 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        DB::table('kategori_produk')->insert([
-            'kode_kategori' => $request->kode_kategori,
-            'nama_kategori' => $request->nama_kategori,
-        ]);
-        $kategori = KategoriModel::all();
-        return view('layouts.kategori.index', compact('kategori'));
+        $kategorii = KategoriModel::where('kode_kategori', '=', $request->kode_kategori)->first();
+        if ($kategorii == null) {
+            DB::table('kategori_produk')->insert([
+                'kode_kategori' => $request->kode_kategori,
+                'nama_kategori' => $request->nama_kategori,
+            ]);
+            $kategori = KategoriModel::all();
+            return view('layouts.kategori.index', compact('kategori'));
+        }else{
+            $kategori = KategoriModel::all();
+            return view('layouts.kategori.index', compact('kategori'));
+        }
     }
 
     /**
@@ -81,7 +87,7 @@ class KategoriController extends Controller
         DB::table('kategori_produk')->where('id',$id)->update([
             'kode_kategori' => $request->kode_kategori,
             'nama_kategori' => $request->nama_kategori,
-           
+
         ]);
         return redirect('kategori');
     }
